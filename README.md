@@ -12,19 +12,19 @@ When set, it is expected the process to abort any on-going execution early.
 
 The signal can be read via two ways:
 
-  select {
-  case <- interrupt.Channel:
-    // Handle abort.
-  case ...
-    ...
-  default:
-  }
+    select {
+    case <- interrupt.Channel:
+      // Handle abort.
+    case ...
+      ...
+    default:
+    }
 
 or
 
-  if interrupt.IsSet() {
-    // Handle abort.
-  }
+    if interrupt.IsSet() {
+      // Handle abort.
+    }
 
 [![GoDoc](https://godoc.org/github.com/maruel/interrupt?status.svg)](https://godoc.org/github.com/maruel/interrupt)
 [![Build Status](https://travis-ci.org/maruel/interrupt.svg?branch=master)](https://travis-ci.org/maruel/interrupt)

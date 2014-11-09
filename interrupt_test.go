@@ -18,12 +18,21 @@ func TestSet(t *testing.T) {
 	default:
 	}
 
+	HandleCtrlC()
+
+	ut.AssertEqual(t, false, IsSet())
+	select {
+	case <-Channel:
+		t.Fatal()
+	default:
+	}
+
 	Set()
-	ut.AssertEqual(t, true, IsSet())
-	i, ok := <-Channel
-	ut.AssertEqual(t, true, i)
-	ut.AssertEqual(t, true, ok)
-	i, ok = <-Channel
-	ut.AssertEqual(t, true, i)
-	ut.AssertEqual(t, true, ok)
+
+	for i := 0; i < 2; i++ {
+		ut.AssertEqual(t, true, IsSet())
+		x, ok := <-Channel
+		ut.AssertEqual(t, true, x)
+		ut.AssertEqual(t, true, ok)
+	}
 }

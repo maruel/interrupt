@@ -30,10 +30,16 @@
 package interrupt
 
 import (
+	"errors"
 	"os"
 	"os/signal"
 	"sync/atomic"
 )
+
+// ErrInterrupted can be used as an error to signal that a process was
+// interrupted but didn't fail in any other way. This permits disambiguating
+// from any other genuine error.
+var ErrInterrupted = errors.New("interrupted")
 
 // Set sets the interrupt signal. It is to be used when the process must exit
 // as soon as possible.

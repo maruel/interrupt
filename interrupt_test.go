@@ -6,33 +6,41 @@ package interrupt
 
 import (
 	"testing"
-
-	"github.com/maruel/ut"
 )
 
 func TestSet(t *testing.T) {
-	ut.AssertEqual(t, false, IsSet())
+	if IsSet() {
+		t.Fatal("IsSet() should be false")
+	}
 	select {
 	case <-Channel:
-		t.Fatal()
+		t.Fatal("Channel should not trigger")
 	default:
 	}
 
 	HandleCtrlC()
 
-	ut.AssertEqual(t, false, IsSet())
+	if IsSet() {
+		t.Fatal("IsSet() should be false")
+	}
 	select {
 	case <-Channel:
-		t.Fatal()
+		t.Fatal("Channel should not trigger")
 	default:
 	}
 
 	Set()
 
 	for i := 0; i < 2; i++ {
-		ut.AssertEqual(t, true, IsSet())
+		if !IsSet() {
+			t.Fatal("IsSet() should be true")
+		}
 		x, ok := <-Channel
-		ut.AssertEqual(t, true, x)
-		ut.AssertEqual(t, true, ok)
+		if !x {
+			t.Fatal("Channel should send true")
+		}
+		if !ok {
+			t.Fatal("Channel should be open")
+		}
 	}
 }
